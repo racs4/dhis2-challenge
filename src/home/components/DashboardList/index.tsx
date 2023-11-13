@@ -58,24 +58,32 @@ export function DashboardListComponent() {
       <FetchComponent loading={loading} error={error}>
         <div className={styles.wrapper} data-testid="dashboard-list">
           {dashboards.length !== 0 &&
-            dashboards.map((post: DashboardSummary) => (
+            dashboards.map((dashboardSummary: DashboardSummary) => (
               <article
-                key={post.id}
+                key={dashboardSummary.id}
                 className={styles["dashboard-wrapper"]}
                 data-testid="dashboard-wrapper"
               >
                 {/* The dashboard summary */}
                 <DashboardSummaryComponent
-                  dashboard={post}
-                  whenClick={() => handleSelectedDashboardId(post.id)}
-                  whenClickStar={() => handleStarred(post.id)}
+                  dashboard={dashboardSummary}
+                  whenClick={() =>
+                    handleSelectedDashboardId(dashboardSummary.id)
+                  }
+                  whenClickStar={() => handleStarred(dashboardSummary.id)}
                 />
                 {/* The dashboard items */}
-                {selectedDashboardId === post.id && (
-                  <MemoizedDashboardItems id={post.id} filter={filter} />
+                {selectedDashboardId === dashboardSummary.id && (
+                  <MemoizedDashboardItems
+                    id={dashboardSummary.id}
+                    filter={filter}
+                  />
                 )}
               </article>
             ))}
+          {dashboards.length === 0 && (
+            <p className={styles.noResults}>No results found</p>
+          )}
         </div>
       </FetchComponent>
     </main>

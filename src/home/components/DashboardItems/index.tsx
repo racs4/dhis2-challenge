@@ -33,12 +33,16 @@ export function DashboardItems({ id, filter }: DashboardItemsProps) {
       <FetchComponent loading={loading} error={error}>
         <div className={styles.wrapper} data-testid="dashboard-item">
           {dashboardItems &&
+            dashboardItems.length > 0 &&
             dashboardItems.map((item: DashboardItem, i) => (
               <article key={item.id}>
                 <DashboardItemComponent item={item} />
                 {i !== dashboardItems.length - 1 && <hr />}
               </article>
             ))}
+          {dashboardItems && dashboardItems.length === 0 && (
+            <p className={styles.noResults}>No results found</p>
+          )}
         </div>
       </FetchComponent>
     </>
