@@ -1,0 +1,9 @@
+.wrapper {
+  width: calc(100% - 2rem);
+  margin: 0 auto;
+}
+
+.wrapper hr {
+  padding: 0;
+  margin: 0;
+}
