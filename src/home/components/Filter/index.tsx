@@ -47,7 +47,7 @@ export const DashboardFilters = ({ filter, whenFilterChange }: FilterProps) => {
         <option value="all">Category: All</option>
         <option value="text">Category: Text</option>
         <option value="visualization">Category: Visualization</option>
-        <option value="map">Category: Text</option>
+        <option value="map">Category: Map</option>
       </select>
     </div>
   );
