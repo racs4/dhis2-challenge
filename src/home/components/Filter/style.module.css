@@ -10,7 +10,7 @@
   padding: 0 10px;
   box-sizing: border-box;
   flex: 2;
-  min-width: 320px;
+  min-width: min(320px, 100%);
 }
 
 .star-select {
