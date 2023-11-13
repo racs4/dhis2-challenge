@@ -1,27 +1,49 @@
-# React + TypeScript + Vite
+# DHIS2 Challenge
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## The Challenge
 
-Currently, two official plugins are available:
+DHIS2 Frontend Task - Option 2
+Build a React application that fetches and renders the list of dashboards available to a DHIS2 user.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## The Solution
 
-## Expanding the ESLint configuration
+The solution is a React application initialized with vitejs. It does not use any UI framework, or any other library apart from the ones used for testing.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Folders
 
-- Configure the top-level `parserOptions` property like this:
+I structured the application in a way that it is easy to navigate through the code. i have a `common` folder that contains all the common components, and a `home` folder that contains all the components related to the `home` (dashboard) page. In each folder, I have sub folders for especific development tasks, like `components`, `hooks`, `utils`, etc.
 
-```js
-   parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-   },
+## Tests
+
+I used vitest to test the application. I only tested the components itself, not the hooks. This is because I am not sure how to test hooks yet, so I decided to leave it out for now. I also did not test the `App` component, because it is just a wrapper for the main component, and it does not have any logic.
+
+## Some details
+
+I tried to create custom hooks to encapsulate the logic, of the vaious requeriments. This way, the components are more clean and easy to read.
+
+I implemented an optional memoized fetch hook, that can be used to fetch data from the API. It is optionally memoized, so it will only fetch the data once, and then return the same data for every call. This is useful for data that does not change often, like the list of dashboards.
+
+A high order component to fetch the data was also implemented. This way, the components that need to fetch data can be wrapped with this HOC, and the data will be available in the component props, with loading and error treatment included.
+
+The localStorageLogic was wrapped in an util file to make it easier to use. This way, the components do not need to know how the localStorage works, and they can just call the functions to save and retrieve the data. The `addId`, `removeId` and `onLoadDashboards` works changing the localStorage in a concise way.
+
+The tests were created with the user in mind. I tried to test the components as a user would use them, and not the implementation details. This way, if the implementation changes, the tests will still pass. The main tests are in `src/home/components/DashboardList/index.test.tsx` where the filter, localStorage and fetch logic are tested.
+
+## How to run
+
+```
+npm install
+npm run dev
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## How to test
+
+```
+npm run test
+```
+
+## How to build
+
+```
+npm run build
+```
