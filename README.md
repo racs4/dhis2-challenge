@@ -1,5 +1,9 @@
 # DHIS2 Challenge
 
+## Access the application
+
+The application is deployed in vercel, and can be accessed in this link: https://dhis2-challenge-racs4.vercel.app/
+
 ## The Challenge
 
 DHIS2 Frontend Task - Option 2
