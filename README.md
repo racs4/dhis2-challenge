@@ -29,6 +29,10 @@ The localStorageLogic was wrapped in an util file to make it easier to use. This
 
 The tests were created with the user in mind. I tried to test the components as a user would use them, and not the implementation details. This way, if the implementation changes, the tests will still pass. The main tests are in `src/home/components/DashboardList/index.test.tsx` where the filter, localStorage and fetch logic are tested.
 
+## Filters
+
+For some reason I thought that the filters were about the dashboards, and not the dashboard items. So I implemented the filters to filter the dashboards with its `displayName` and `starred`. But after read the requeriments again, I realized that the filters were about the dashboard items `type`. So I implemented this filter and also kept the other filters, because I thought it was a nice feature to have.
+
 ## How to run
 
 ```
