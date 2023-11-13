@@ -104,22 +104,29 @@ const Star = ({
   whenClick: () => void;
 }) => {
   return (
-    <p
-      onClick={(e) => {
-        e.stopPropagation();
-        whenClick();
-      }}
-    >
+    <>
       {starred ? (
         <img
           src="/icons/marked-star.svg"
           alt="Marked Star icon"
           data-testid="marked-star"
+          onClick={(e) => {
+            e.stopPropagation();
+            whenClick();
+          }}
         ></img>
       ) : (
-        <img src="/icons/star.svg" alt="Star icon" data-testid="star"></img>
+        <img
+          src="/icons/star.svg"
+          alt="Star icon"
+          data-testid="star"
+          onClick={(e) => {
+            e.stopPropagation();
+            whenClick();
+          }}
+        ></img>
       )}
-    </p>
+    </>
   );
 };
 
