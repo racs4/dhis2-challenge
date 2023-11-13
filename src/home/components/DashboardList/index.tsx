@@ -4,7 +4,7 @@ import { useFetch } from "../../../common/hooks/useFetch";
 import { DashboardCollection, DashboardSummary } from "../../types";
 import { DashboardItems } from "../DashboardItems";
 import { DashboardFilters } from "../Filter";
-import { useFilter } from "../../hooks/useFilter";
+import { useFilterSummary } from "../../hooks/useFilter";
 import { useStar } from "../../hooks/useStar";
 import { onLoadDashboards } from "../../utils/localStorageLogic";
 import styles from "./style.module.css";
@@ -16,7 +16,26 @@ const MemoizedDashboardItems = memo(DashboardItems);
  * A component that displays the dashboard list.
  */
 export function DashboardListComponent() {
+  // Handles the selected dashboard logic
+  const [selectedDashboardId, setSelectedDashboardId] = useState("");
+  const handleSelectedDashboardId = (id: string) => {
+    if (selectedDashboardId === id) {
+      setSelectedDashboardId("");
+    } else {
+      setSelectedDashboardId(id);
+    }
+  };
   // Does the fetch for the dashboards
+  const whenLoadDashboards = (dashboards: DashboardCollection) => {
+    const dashboardsCollection = onLoadDashboards(dashboards);
+    if (
+      dashboardsCollection?.dashboards &&
+      dashboardsCollection?.dashboards.length !== 0
+    ) {
+      setSelectedDashboardId(dashboards.dashboards[0].id);
+    }
+    return dashboards;
+  };
   const {
     data: posts,
     setData: setDashboards,
@@ -24,14 +43,12 @@ export function DashboardListComponent() {
     error,
   } = useFetch<DashboardCollection>({
     url: "dashboards.json",
-    whenLoad: onLoadDashboards,
+    whenLoad: whenLoadDashboards,
   });
   // Handles the starred logic
   const { handleStarred } = useStar(posts, setDashboards);
   // Handles the filter logic
-  const { dashboards, setFilter, filter } = useFilter(posts);
-  // Handles the selected dashboard logic
-  const [selectedDashboardId, setSelectedDashboardId] = useState("");
+  const { dashboards, setFilter, filter } = useFilterSummary(posts);
 
   return (
     <main className={styles.main}>
@@ -50,12 +67,12 @@ export function DashboardListComponent() {
                 {/* The dashboard summary */}
                 <DashboardSummaryComponent
                   dashboard={post}
-                  whenClick={() => setSelectedDashboardId(post.id)}
+                  whenClick={() => handleSelectedDashboardId(post.id)}
                   whenClickStar={() => handleStarred(post.id)}
                 />
                 {/* The dashboard items */}
                 {selectedDashboardId === post.id && (
-                  <MemoizedDashboardItems id={post.id} />
+                  <MemoizedDashboardItems id={post.id} filter={filter} />
                 )}
               </article>
             ))}

@@ -23,12 +23,40 @@ describe("DashboardItems", () => {
   }));
 
   it("should render the dashboard items", async () => {
-    const { getByText } = render(<DashboardItems id="id" />);
+    const { getByText } = render(
+      <DashboardItems
+        id="id"
+        filter={{
+          displayName: "",
+          starred: "all",
+          type: "all",
+        }}
+      />
+    );
 
     await waitFor(() => {
       expect(getByText("Dashboard 1")).toBeInTheDocument();
       expect(getByText("Dashboard 2")).toBeInTheDocument();
       expect(getByText("Dashboard 3")).toBeInTheDocument();
+    });
+  });
+
+  it("should filter the dashboard items type", async () => {
+    const { getByText, queryByText } = render(
+      <DashboardItems
+        id="id"
+        filter={{
+          displayName: "",
+          starred: "all",
+          type: "text",
+        }}
+      />
+    );
+
+    await waitFor(() => {
+      expect(getByText("Dashboard 1")).toBeInTheDocument();
+      expect(queryByText("Dashboard 2")).not.toBeInTheDocument();
+      expect(queryByText("Dashboard 3")).not.toBeInTheDocument();
     });
   });
 });

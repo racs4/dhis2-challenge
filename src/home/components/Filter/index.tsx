@@ -1,4 +1,4 @@
-import { Filter, StarredOptions } from "../../types";
+import { Filter, StarredOptions, TypeOptions } from "../../types";
 import styles from "./style.module.css";
 
 export type FilterProps = {
@@ -33,9 +33,21 @@ export const DashboardFilters = ({ filter, whenFilterChange }: FilterProps) => {
         }
         className={styles["star-select"]}
       >
-        <option value="all">All</option>
-        <option value="starred">Starred</option>
-        <option value="not-starred">Not starred</option>
+        <option value="all">Star: All</option>
+        <option value="starred">Star: Starred</option>
+        <option value="not-starred">Star: Not starred</option>
+      </select>
+      <select
+        data-testid="type-select"
+        className={styles["type-select"]}
+        onChange={(e) =>
+          whenFilterChange({ ...filter, type: e.target.value as TypeOptions })
+        }
+      >
+        <option value="all">Category: All</option>
+        <option value="text">Category: Text</option>
+        <option value="visualization">Category: Visualization</option>
+        <option value="map">Category: Text</option>
       </select>
     </div>
   );

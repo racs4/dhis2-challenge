@@ -72,7 +72,13 @@ export type DashboardItemMap = {
 export type Filter = {
   displayName: string;
   starred: StarredOptions;
+  type: TypeOptions;
 };
+
+/**
+ * The options for type filters.
+ */
+export type TypeOptions = "all" | "visualization" | "map" | "text";
 
 /**
  * The options for starred filters.

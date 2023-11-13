@@ -3,7 +3,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, act, waitFor, fireEvent } from "@testing-library/react";
 import { DashboardListComponent } from ".";
 
-describe("useFetch", () => {
+describe("DashboardList", () => {
   vi.mock("../../../common/utils/config", () => ({
     fetcher: () =>
       Promise.resolve({
@@ -150,24 +150,6 @@ describe("useFetch", () => {
     });
   });
 
-  it("should show items when summary is clicked", async () => {
-    const { getAllByTestId } = render(<DashboardListComponent />);
-
-    await waitFor(() => {
-      expect(getAllByTestId("dashboard-wrapper")).toHaveLength(2);
-    });
-
-    act(() => {
-      const dashboardSummary = getAllByTestId("dashboard-summary");
-      expect(dashboardSummary).toHaveLength(2);
-      fireEvent.click(dashboardSummary[0]);
-    });
-
-    await waitFor(() => {
-      expect(getAllByTestId("dashboard-item")).toHaveLength(1);
-    });
-  });
-
   it("should show only one item details", async () => {
     const { getAllByTestId } = render(<DashboardListComponent />);
 
@@ -180,6 +162,18 @@ describe("useFetch", () => {
       expect(dashboardSummary).toHaveLength(2);
       fireEvent.click(dashboardSummary[0]);
       fireEvent.click(dashboardSummary[1]);
+    });
+
+    await waitFor(() => {
+      expect(getAllByTestId("dashboard-item")).toHaveLength(1);
+    });
+  });
+
+  it("should expand first item details on load", async () => {
+    const { getAllByTestId } = render(<DashboardListComponent />);
+
+    await waitFor(() => {
+      expect(getAllByTestId("dashboard-wrapper")).toHaveLength(2);
     });
 
     await waitFor(() => {

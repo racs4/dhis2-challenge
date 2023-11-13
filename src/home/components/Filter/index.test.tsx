@@ -7,7 +7,7 @@ describe("DashboardFilters", () => {
   it("should render search input and star select", () => {
     const { getByPlaceholderText, getByTestId } = render(
       <DashboardFilters
-        filter={{ displayName: "", starred: "all" }}
+        filter={{ displayName: "", starred: "all", type: "all" }}
         whenFilterChange={() => {}}
       />
     );
@@ -19,7 +19,7 @@ describe("DashboardFilters", () => {
     const whenFilterChange = vi.fn();
     const { getByPlaceholderText } = render(
       <DashboardFilters
-        filter={{ displayName: "", starred: "all" }}
+        filter={{ displayName: "", starred: "all", type: "all" }}
         whenFilterChange={whenFilterChange}
       />
     );
@@ -28,6 +28,7 @@ describe("DashboardFilters", () => {
     expect(whenFilterChange).toHaveBeenCalledWith({
       displayName: "test",
       starred: "all",
+      type: "all",
     });
   });
 
@@ -35,7 +36,7 @@ describe("DashboardFilters", () => {
     const whenFilterChange = vi.fn();
     const { getByTestId } = render(
       <DashboardFilters
-        filter={{ displayName: "", starred: "all" }}
+        filter={{ displayName: "", starred: "all", type: "all" }}
         whenFilterChange={whenFilterChange}
       />
     );
@@ -44,6 +45,24 @@ describe("DashboardFilters", () => {
     expect(whenFilterChange).toHaveBeenCalledWith({
       displayName: "",
       starred: "starred",
+      type: "all",
+    });
+  });
+
+  it("should call whenFilterChange with updated type when type select changes", () => {
+    const whenFilterChange = vi.fn();
+    const { getByTestId } = render(
+      <DashboardFilters
+        filter={{ displayName: "", starred: "all", type: "all" }}
+        whenFilterChange={whenFilterChange}
+      />
+    );
+    const typeSelect = getByTestId("type-select");
+    fireEvent.change(typeSelect, { target: { value: "text" } });
+    expect(whenFilterChange).toHaveBeenCalledWith({
+      displayName: "",
+      starred: "all",
+      type: "text",
     });
   });
 });

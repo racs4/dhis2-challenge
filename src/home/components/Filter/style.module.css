@@ -18,3 +18,9 @@
   height: 32px;
   flex: 1;
 }
+
+.type-select {
+  box-sizing: border-box;
+  height: 32px;
+  flex: 1;
+}

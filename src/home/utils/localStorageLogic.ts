@@ -40,7 +40,9 @@ export function removeId(id: string) {
  * Loads the starred/not starred status for each dashboard from local storage.
  * @param posts - The dashboard collection to load the status for.
  */
-export function onLoadDashboards(posts: DashboardCollection) {
+export function onLoadDashboards(
+  posts: DashboardCollection
+): DashboardCollection {
   const starred = localStorage.getItem("starred");
   const notStarred = localStorage.getItem("notStarred");
   if (starred || notStarred) {
@@ -60,4 +62,5 @@ export function onLoadDashboards(posts: DashboardCollection) {
       return post;
     });
   }
+  return posts;
 }

@@ -1,5 +1,11 @@
 import { useState, useMemo } from "react";
-import { DashboardCollection, DashboardSummary, Filter } from "../types";
+import {
+  Dashboard,
+  DashboardCollection,
+  DashboardItem,
+  DashboardSummary,
+  Filter,
+} from "../types";
 
 /**
  * Filters a collection of dashboards based on a given filter object.
@@ -7,7 +13,7 @@ import { DashboardCollection, DashboardSummary, Filter } from "../types";
  * @param filter - The filter object to apply to the dashboards.
  * @returns An array of dashboard summaries that match the given filter.
  */
-const handleFilter = (
+const handleFilterSummary = (
   posts: DashboardCollection,
   filter: Filter
 ): DashboardSummary[] => {
@@ -19,7 +25,7 @@ const handleFilter = (
   const dashboards = posts.dashboards;
 
   // use a self-invoking function to filter dashboards by starred
-  const dashboardsFilterdByStar = (function () {
+  const dashboardsFilteredByStar = (function () {
     if (filter.starred === "all") {
       return dashboards;
     }
@@ -36,7 +42,7 @@ const handleFilter = (
   })();
 
   // filter dashboards by displayName
-  const dashboardsFilterdByDisplayName = dashboardsFilterdByStar.filter(
+  const dashboardsFilterdByDisplayName = dashboardsFilteredByStar.filter(
     (post: DashboardSummary) =>
       post.displayName.toLowerCase().includes(filter.displayName.toLowerCase())
   );
@@ -44,20 +50,47 @@ const handleFilter = (
   return dashboardsFilterdByDisplayName;
 };
 
+function handleFilterDashboards(
+  posts: Dashboard,
+  filter: Filter
+): DashboardItem[] {
+  if (!posts || !posts.dashboardItems) {
+    return [];
+  }
+
+  if (filter.type === "all") {
+    return posts.dashboardItems;
+  }
+
+  return posts.dashboardItems.filter(
+    (item: DashboardItem) => item.type.toLowerCase() === filter.type
+  );
+}
+
 /**
  * Custom hook that filters a collection of dashboards based on a filter object.
  * @param posts The collection of dashboards to filter.
  * @returns An object containing the filtered dashboards, the current filter object, and a function to update the filter object.
  */
-export const useFilter = (posts: DashboardCollection) => {
+export const useFilterSummary = (posts: DashboardCollection) => {
   const [filter, setFilter] = useState<Filter>({
     displayName: "",
     starred: "all",
+    type: "all",
   });
   const dashboards = useMemo(
-    () => handleFilter(posts, filter),
+    () => handleFilterSummary(posts, filter),
     [posts, filter]
   );
 
   return { dashboards, filter, setFilter };
+};
+
+export const useFilterDashboards = (posts: Dashboard, filter: Filter) => {
+  const dashboardItems = useMemo(
+    () => handleFilterDashboards(posts, filter),
+    [posts, filter]
+  );
+
+  return { dashboardItems };
 };

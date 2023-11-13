@@ -1,15 +1,21 @@
 import { FetchComponent } from "../../../common/components/FetchComponent";
 import { useFetch } from "../../../common/hooks/useFetch";
-import { Dashboard, DashboardItem } from "../../types";
+import { useFilterDashboards } from "../../hooks/useFilter";
+import { Dashboard, DashboardItem, Filter } from "../../types";
 import { DashboardItemComponent } from "../DashboardItem";
 import styles from "./style.module.css";
+
+type DashboardItemsProps = {
+  id: string;
+  filter: Filter;
+};
 
 /**
  * A component that displays the dashboard items.
  * @param id The dashboard id.
  * @returns The dashboard items component.
  */
-export function DashboardItems({ id }: { id: string }) {
+export function DashboardItems({ id, filter }: DashboardItemsProps) {
   // Does the fetch for the dashboard items
   const {
     data: dashboard,
@@ -20,15 +26,17 @@ export function DashboardItems({ id }: { id: string }) {
     memo: id,
   });
 
+  const { dashboardItems } = useFilterDashboards(dashboard, filter);
+
   return (
     <>
       <FetchComponent loading={loading} error={error}>
         <div className={styles.wrapper} data-testid="dashboard-item">
-          {dashboard.dashboardItems &&
-            dashboard.dashboardItems.map((item: DashboardItem, i) => (
+          {dashboardItems &&
+            dashboardItems.map((item: DashboardItem, i) => (
               <article key={item.id}>
                 <DashboardItemComponent item={item} />
-                {i !== dashboard.dashboardItems.length - 1 && <hr />}
+                {i !== dashboardItems.length - 1 && <hr />}
               </article>
             ))}
         </div>
